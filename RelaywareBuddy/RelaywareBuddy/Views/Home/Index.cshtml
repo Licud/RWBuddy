@@ -1,0 +1,48 @@
+﻿@model RelaywareBuddy.ViewModels.IndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<div class="col-md-8">
+
+
+    <div class="col-md-12">
+
+        @Html.Partial("TicketPartial", Model.ticket)
+
+    </div>
+
+    <div class="col-md-12">
+
+        @Html.Partial("CustomerAccessPartial", Model.customerAccess)
+
+    </div>
+
+    <div class="col-md-12">
+
+        @Html.Partial("CreateCustomerAccessView", Model.newCustomerAccess)
+        
+    </div>
+
+    <div class="col-md-12">
+
+        @Html.Partial("CustomerPartial", Model.customer)
+
+    </div>
+
+</div>
+
+<div class="col-md-4">
+
+    <div class="col-md-12">
+
+        @Html.Partial("TimerPartial", Model.timer)
+
+    </div>
+
+
+</div>
+

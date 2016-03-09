@@ -1,0 +1,1 @@
+﻿var RWBuddyApp = angular.module('RWBuddyApp',['RWBuddyController']);

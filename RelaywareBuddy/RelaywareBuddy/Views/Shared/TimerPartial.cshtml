@@ -1,0 +1,35 @@
+﻿@model RelaywareBuddyData.Models.Timer
+
+<div ng-controller="timerController">
+
+    <div class="col-md-12 text-center">
+
+        <h3>Timer</h3>
+        <hr />
+
+    </div>
+
+    <div class="col-md-12">
+
+        <p class="inline-display"><strong>Search</strong></p>
+
+        <input id="timer-search-box" class="form-group" type="text" />
+
+        <hr />
+    </div>
+
+    <div id="timer-list">
+
+    </div>
+
+    <div id="add-task-box" ng-click="addTask()" class="row">
+
+        <div class="col-md-12 text-center">
+
+            <p><a class="btn btn-primary">Add Task</a></p>
+
+        </div>
+
+    </div>
+
+</div>

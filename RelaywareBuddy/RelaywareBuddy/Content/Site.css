@@ -1,0 +1,34 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 100%;
+}
+
+.inline-display{ display:inline;}
+
+.block-display{display:block;}
+
+.no-display{display: none;}
+
+#timer-search-box {
+    margin-left: 50px;
+    margin-bottom: 10px;
+}
+
+.add-bottom-margin{ margin-bottom: 10px;}
+
+#for-box{ width:90%; display:inline; margin-right: 7px; }
+
+.task-box > p > a > span > .start-timer, .task-box > p > a > span > .pause-timer {margin-left: 10px;}

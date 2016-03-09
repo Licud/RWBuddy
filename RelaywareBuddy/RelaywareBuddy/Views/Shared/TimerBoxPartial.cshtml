@@ -1,0 +1,37 @@
+﻿@model RelaywareBuddy.ViewModels.TimerViewModel
+
+<div id="@Model.taskGeneratedId" class="row task-box">
+
+    <div class="col-md-2 add-bottom-margin">
+        <p class="middle-align-13"><strong>For:</strong></p>
+    </div>
+    
+    <div class="col-md-10 add-bottom-margin">
+        <input ng-bind="tasksList[@Model.taskGeneratedId].task" id="for-box" class="form-control middle-align-9">
+        <a ng-click="showDescription(@Model.taskGeneratedId)"><span class="inline-display"><i class="glyphicon glyphicon-resize-full"></i></span></a>
+    </div>
+    
+    <div class="col-md-2 add-bottom-margin block-display task">
+        <p class="middle-align-13"><strong>Task:</strong></p>
+    </div>
+    
+    <div class="col-md-10 add-bottom-margin block-display task">
+        <textarea class="form-control" rows="3"></textarea>
+    </div>
+    
+    <p id="timer-paragraph-"@Model.taskGeneratedId" class="text-center middle-align-13">
+
+        <strong>Time Passed: </strong>
+        <span ng-bind="tasksList['\'' + @Model.taskGeneratedId + '\''].hours"></span> : 
+
+        <span ng-bind="tasksList['\'' + @Model.taskGeneratedId + '\''].minutes"></span> : 
+
+        <span ng-bind="tasksList['\'' + @Model.taskGeneratedId + '\''].seconds"></span>
+
+        <a id="start@Model.taskGeneratedId" ng-click="startTimer(@Model.taskGeneratedId)">
+        
+            <span class="inline-display"><i class="glyphicon start-timer glyphicon-play"></i></span>
+        
+        </a>
+    </p>
+</div>
