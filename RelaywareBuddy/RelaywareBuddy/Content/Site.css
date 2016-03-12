@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #f1f1f1 !important;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -29,6 +30,12 @@ textarea {
 
 .add-bottom-margin{ margin-bottom: 10px;}
 
-#for-box{ width:90%; display:inline; margin-right: 7px; }
+#for-box{ width:85%; display:inline; margin-right: 7px; }
 
 .task-box > p > a > span > .start-timer, .task-box > p > a > span > .pause-timer {margin-left: 10px;}
+
+.time-travel-box > .time-travel-time { display: inline-block; width: 30%; }
+
+.time-travel-box > .time-travel-type { display: inline-block; width: 50%; }
+
+.partial-content{ background-color: white; padding: 7px; margin-top: 7px; border-radius: 10px;}

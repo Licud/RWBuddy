@@ -1,32 +1,120 @@
 ﻿@model RelaywareBuddyData.Models.Timer
 
+<script>
+    window.theraHelp = window.theraHelp || {};
+
+</script>
+
 <div ng-controller="timerController">
-
-    <div class="col-md-12 text-center">
-
-        <h3>Timer</h3>
-        <hr />
-
-    </div>
-
-    <div class="col-md-12">
-
-        <p class="inline-display"><strong>Search</strong></p>
-
-        <input id="timer-search-box" class="form-group" type="text" />
-
-        <hr />
-    </div>
-
-    <div id="timer-list">
-
-    </div>
-
-    <div id="add-task-box" ng-click="addTask()" class="row">
+    <div class="partial-content">
 
         <div class="col-md-12 text-center">
 
-            <p><a class="btn btn-primary">Add Task</a></p>
+            <h3>Timer</h3>
+            <hr />
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <p class="inline-display"><strong>Search</strong></p>
+            </div>
+            <div class="col-md-10">
+                <input id="timer-search-box" class="form-group" type="text" />
+            </div>
+        </div>
+
+        <div id="timer-controls" class="row no-display">
+            <a ng-click="showAllTicketInformation()">
+                <div class="col-md-6 btn">
+                    <p>Show All Information</p>
+                </div>
+            </a>
+
+            <a ng-click="hideAllTicketInformation()">
+                <div class="col-md-6 btn">
+                    <p>Hide All Information</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div id="timer-list" ng-repeat="task in tasksList">
+        <div class="partial-content">
+            <div id="{{task.timerObjectId}}" class="task-box">
+                <div class="row">
+                    <div class="col-md-2 add-bottom-margin">
+                        <p class="middle-align-13"><strong>For:</strong></p>
+                    </div>
+
+                    <div class="col-md-10 add-bottom-margin">
+                        <input ng-bind="task.task" id="for-box" class="form-control middle-align-9">
+                        <a ng-click="showMoreInfo(task.timerObjectId)"><span class="inline-display"><i class="glyphicon glyphicon-resize-full"></i></span></a>
+                    </div>
+                </div>
+
+                <div class="row more-info">
+                    <div class="col-md-2 add-bottom-margin block-display">
+                        <p class="middle-align-13"><strong>Task:</strong></p>
+                    </div>
+
+                    <div class="col-md-10 add-bottom-margin block-display">
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="row more-info">
+                    <div class="col-md-2 add-bottom-margin block-display">
+                        <p class="middle-align-13"><strong>Manual</strong></p>
+                    </div>
+
+                    <div class="col-md-10 add-bottom-margin block-display time-travel-box">
+                        <select class="form-control time-travel-time" ng-model="task.timeTravel" ng-options="option.value for option in possibleTimeTravel track by option.value"> </select>
+                        <select class="form-control time-travel-type" ng-model="task.timeTravelTypes" ng-options="type.type for type in timeTypes track by type.type"> </select>
+
+                        <a id="revert{{task.timerObjectId}}" ng-click="timeTravel(0, task.timerObjectId)">
+                            <span class="inline-display"><i class="glyphicon start-timer glyphicon-chevron-left"></i></span>
+                        </a>
+
+                        <a id="forward{{task.timerObjectId}}" ng-click="timeTravel(1, task.timerObjectId)">
+                            <span class="inline-display"><i class="glyphicon start-timer glyphicon-chevron-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <p id="timer-paragraph-{{task.timerObjectId}}" class="text-center middle-align-13">
+
+                        <strong>Time Passed: </strong>
+                        <span ng-bind="task.hours"></span> :
+
+                        <span ng-bind="task.minutes"></span> :
+
+                        <span ng-bind="task.seconds"></span>
+
+                        <a id="pause{{task.timerObjectId}}" ng-click="pauseTimer(task.timerObjectId)" class="no-display">
+                            <span class="inline-display"><i class="glyphicon pause-timer glyphicon-pause"></i></span>
+                        </a>
+
+                        <a id="start{{task.timerObjectId}}" ng-click="startTimer(task.timerObjectId)">
+                            <span class="inline-display"><i class="glyphicon start-timer glyphicon-play"></i></span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="partial-content">
+
+        <div id="add-task-box" class="row">
+
+            <div class="col-md-12 text-center">
+
+                <p><a ng-click="addTask()" class="btn btn-primary">Add Task</a></p>
+
+            </div>
 
         </div>
 

@@ -2,88 +2,100 @@
 
 
 RWBuddyController.controller('timerController', ['$scope', '$http', '$interval', '$compile', function ($scope, $http, $interval, $compile) {
+
+    $scope.tasksList = [];
+    $scope.timeTypes = [{ type: "Hour" }, { type: "Minutes" }];
+    $scope.possibleTimeTravel = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 5 }, { value: 10 }, { value: 15 }, { value: 30 }, { value: 45 }, { value: 60 }];
+
+    var latestTask = 0;
+    var currentRunningTimer = "";
     
-    $scope.tasksList = {};
-
-    var latestNumber = 0;
-
-    $scope.addTask = function () {
-        var currentDate = new Date();
-
-        var myTest = "";
-
-        var taskGeneratedId = (currentDate.getFullYear() + "" + (currentDate.getMonth() + 1) + "" + currentDate.getDate() + "" + latestNumber).toString();
-
-        $scope.tasksList[taskGeneratedId] = { timerObjectId: taskGeneratedId, hours: 0, minutes: 0, seconds: 0, task: "Task " + latestNumber , description: "", timerIsRunning: 0, timer: null }
-
-        //$http.get('Home/AddTimer',data: { _taskGeneratedId: taskGeneratedId }).then(
-        //        function (response) {
-        //            myTest = response.data;
-
-        //            var toAppend = $compile(myTest)($scope);
-
-        //            $(toAppend).appendTo($('#timer-list'))
-        //        }
-        //    );
-
-        $http({
-            method: 'POST',
-            url : 'Home/AddTimer',
-            data: { taskGeneratedId }
-        }).then(
-            function (response) {
-                myTest = response.data;
-
-                var toAppend = $compile(myTest)($scope);
-
-                $(toAppend).appendTo($('#timer-list'))
-            }
-        );
-
-        //var toAppend = $comkpile("<div id=\"" + taskGeneratedId + "\" class=\"row task-box\"><div class=\"col-md-2 add-bottom-margin\"><p class=\"middle-align-13\"><strong>For:</strong></p></div><div class=\"col-md-10 add-bottom-margin\"><input ng-bind=\"tasksList[" + taskGeneratedId + "].task\" id=\"for-box\" class=\"form-control middle-align-9\"><a ng-click=\"showDescription(" + taskGeneratedId + ")\"><span class=\"inline-display\"><i class=\"glyphicon glyphicon-resize-full\"></i></span></a></div><div class=\"col-md-2 add-bottom-margin block-display task\"><p class=\"middle-align-13\"><strong>Task:</strong></p></div><div class=\"col-md-10 add-bottom-margin block-display task\"><textarea class=\"form-control\" rows=\"3\"></textarea></div><p id=\"timer-paragraph-" + taskGeneratedId + "\" class=\"text-center middle-align-13\"><strong>Time Passed: </strong><span ng-bind=\"tasksList['" + taskGeneratedId + "'].hours\"></span> : <span ng-bind=\"tasksList['" + taskGeneratedId + "'].minutes\"></span> : <span ng-bind=\"tasksList[\'" + taskGeneratedId + "\'].seconds \"></span><a id=\"start" + taskGeneratedId + "\" ng-click=\"startTimer(" + taskGeneratedId + ")\"><span class=\"inline-display\"><i class=\"glyphicon start-timer glyphicon-play\"></i></span></a></p>")($scope);
-        //var toAppend = $comkpile(myTest)($scope);
-
-        //$(toAppend).appendTo($('#timer-list'))
-
-        latestNumber += 1;
+    function timerObject(_timerObjectId, _hours, _minutes, _seconds, _task , _description, _timerIsRunning, _timeTravel, _timeTravelTypes,  _timer) {
+        this.timerObjectId = _timerObjectId;
+        this.hours = _hours;
+        this.minutes = _minutes;
+        this.seconds = _seconds;
+        this.task = _task;
+        this.description = _description;
+        this.timerIsRunning = _timerIsRunning;
+        this.timeTravel = _timeTravel;
+        this.timeTravelTypes = _timeTravelTypes;
+        this.timer = _timer;
     }
 
-    $scope.startTimer = function (taskGeneratedId) {
+    $scope.addTask = function () {
+        $.post("Home/AddTimer", { "id": latestTask },
+            function (response) {
+                var newTimer = new timerObject(response.timerObjectId, response.hours, response.minutes, response.seconds, response.task, response.description, response.timerIsRunning, { value: 10 }, { type: "Minutes" }, null);
 
-        if ($scope.tasksList[taskGeneratedId].timerIsRunning === 0) {
+                $scope.tasksList.push(newTimer);
 
-            $scope.tasksList[taskGeneratedId].timer = $interval(function () {
+                latestTask += 1;
 
-                $scope.tasksList[taskGeneratedId].seconds += 1;
+                window.latestTaskCopy += 1;
 
-                if ($scope.tasksList[taskGeneratedId].seconds === 60) {
-                    $scope.tasksList[taskGeneratedId].seconds = 0;
-                    $scope.tasksList[taskGeneratedId].minutes += 1;
+                $scope.$apply(); // Apply changes immediately to the ng-repeat
+            });
+
+        $('#timer-controls').removeClass('no-display');
+        $('#timer-controls').addClass('block-display');
+
+    }
+
+    $scope.startTimer = function (_timerObjectId) {
+
+        var selectedTaskIndex = $scope.getObjectIndex(_timerObjectId);
+
+        if (currentRunningTimer !== "") {
+            $scope.pauseTimer(currentRunningTimer);
+        }
+
+        if($scope.tasksList[selectedTaskIndex].timerIsRunning === 0) {
+
+            $scope.tasksList[selectedTaskIndex].timer = $interval(function () {
+
+                $scope.tasksList[selectedTaskIndex].seconds += 1;
+
+                if ($scope.tasksList[selectedTaskIndex].seconds === 60) {
+                    $scope.tasksList[selectedTaskIndex].seconds = 0;
+                    $scope.tasksList[selectedTaskIndex].minutes += 1;
                 }
 
-                if ($scope.tasksList[taskGeneratedId].minutes === 60) {
-                    $scope.tasksList[taskGeneratedId].hours += 1;
-                    $scope.tasksList[taskGeneratedId].minutes = 0;
+                if ($scope.tasksList[selectedTaskIndex].minutes === 60) {
+                    $scope.tasksList[selectedTaskIndex].hours += 1;
+                    $scope.tasksList[selectedTaskIndex].minutes = 0;
                 }
             }, 1000);
 
-            $scope.tasksList[taskGeneratedId].timerIsRunning = 1;
+            $scope.tasksList[selectedTaskIndex].timerIsRunning = 1;
 
-            $('#start' + taskGeneratedId).remove();
+            $('#start' + _timerObjectId).addClass('no-display');
+            $('#pause' + _timerObjectId).removeClass('no-display')
 
-            var toAppend = $compile("<a id=\"pause" + taskGeneratedId + "\" ng-click=\"pauseTimer(" + taskGeneratedId + ")\")\"><span class=\"inline-display\"><i class=\"glyphicon pause-timer glyphicon-pause\"></i></span></a>")($scope);
-
-            $(toAppend).appendTo($('#timer-paragraph-' + taskGeneratedId))
-
+            currentRunningTimer = _timerObjectId;
         }
-
     }
 
-    $scope.showDescription = function (taskGeneratedId) {
+    $scope.pauseTimer = function (_timerObjectId) {
 
-        var descExpandGlyphIcons = $('#' + taskGeneratedId + ' > div > a > span > i');
+        var selectedTaskIndex = $scope.getObjectIndex(_timerObjectId);
 
-        $('#' + taskGeneratedId + ' > .task').slideToggle("slow");
+        currentRunningTimer = "";
+
+        if (angular.isDefined($scope.tasksList[selectedTaskIndex].timer)) {
+            $interval.cancel($scope.tasksList[selectedTaskIndex].timer);
+
+            $scope.tasksList[selectedTaskIndex].timerIsRunning = 0;
+            $('#start' + _timerObjectId).removeClass('no-display');
+            $('#pause' + _timerObjectId).addClass('no-display');
+        }
+    }
+
+    $scope.showMoreInfo = function (_timerObjectId) {
+
+        var descExpandGlyphIcons = $('#' + _timerObjectId + ' > div > a > span > i');
+
+        $('#' + _timerObjectId + ' > .more-info').slideToggle("slow");
 
         if (descExpandGlyphIcons.hasClass('glyphicon-resize-full')) {
             descExpandGlyphIcons.removeClass('glyphicon-resize-full');
@@ -96,17 +108,70 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
 
     }
 
-    $scope.pauseTimer = function (taskGeneratedId) {
-        if (angular.isDefined($scope.tasksList[taskGeneratedId].timer)) {
-            $interval.cancel($scope.tasksList[taskGeneratedId].timer);
+    $scope.timeTravel = function(direction, _timerObjectId)
+    {
+        var selectedTaskIndex = $scope.getObjectIndex(_timerObjectId);
 
-            $scope.tasksList[taskGeneratedId].timerIsRunning = 0;
+        if (direction === 0) { // revert time
+            if ($scope.tasksList[selectedTaskIndex].timeTravelTypes.type === "Minutes") {
+                var minutesDifferenceResult = $scope.tasksList[selectedTaskIndex].minutes - $scope.tasksList[selectedTaskIndex].timeTravel.value;
 
-            $('#pause' + taskGeneratedId).remove();
+                if (minutesDifferenceResult < 0) {
+                    var hoursDiffercenceResult = $scope.tasksList[selectedTaskIndex].hours - 1;
 
-            var toAppend = $compile("<a id=\"start" + taskGeneratedId + "\" ng-click=\"startTimer(" + taskGeneratedId + ")\"><span class=\"inline-display\"><i class=\"glyphicon start-timer glyphicon-play\"></i></span></a>")($scope);
+                    if (hoursDiffercenceResult >= 0) {
+                        $scope.tasksList[selectedTaskIndex].hours -= 1;
+                        $scope.tasksList[selectedTaskIndex].minutes = 60 + minutesDifferenceResult;
+                    } else if (hoursDiffercenceResult < 0) {
+                        alert("Subtraction not possible.");
+                    }
+                } else {
+                    $scope.tasksList[selectedTaskIndex].minutes -= $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                }
+            }
 
-            $(toAppend).appendTo($('#timer-paragraph-' + taskGeneratedId))
+
+            if ($scope.tasksList[selectedTaskIndex].timeTravelTypes.type === "Hour") {
+                var hoursDiffercenceResult = $scope.tasksList[selectedTaskIndex].hours - $scope.tasksList[selectedTaskIndex].timeTravel.value;
+
+                if (hoursDiffercenceResult < 0) {
+                    alert("Subtraction not possible.");
+                } else {
+                    $scope.tasksList[selectedTaskIndex].hours -= $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                }
+            }
+        } else if (direction === 1) { // Fast forward
+            if ($scope.tasksList[selectedTaskIndex].timeTravelTypes.type === "Minutes") {
+                var additionResult = $scope.tasksList[selectedTaskIndex].minutes + $scope.tasksList[selectedTaskIndex].timeTravel.value;
+
+                if (additionResult >= 60) {
+                    $scope.tasksList[selectedTaskIndex].minutes = additionResult - 60;
+                    $scope.tasksList[selectedTaskIndex].hours += 1;
+                } else {
+                    $scope.tasksList[selectedTaskIndex].minutes += $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                }
+            }
+
+            if ($scope.tasksList[selectedTaskIndex].timeTravelTypes.type === "Hour") {
+                var additionResult = $scope.tasksList[selectedTaskIndex].hours += $scope.tasksList[selectedTaskIndex].timeTravel.value;
+            }
+        } 
+
+    }
+
+    $scope.showAllTicketInformation = function () {
+        $('.more-info').show("slow");
+    }
+
+    $scope.hideAllTicketInformation = function () {
+        $('.more-info').hide("slow");
+    }
+
+    $scope.getObjectIndex = function (_timerObjectId) {
+        for(var i = 0; i < $scope.tasksList.length; i++){
+            if ($scope.tasksList[i].timerObjectId === _timerObjectId) {
+                return i;
+            }
         }
     }
 

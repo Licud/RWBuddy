@@ -10,8 +10,9 @@ using System.Web.Mvc;
 namespace RelaywareBuddy.Controllers
 {
     public class HomeController : Controller
-    { 
-        // GET: Home
+    {
+        private RWData RWData = new RWData();
+
         public ActionResult Index()
         {
             IndexViewModel thisModel = new IndexViewModel()
@@ -27,10 +28,18 @@ namespace RelaywareBuddy.Controllers
             return View(thisModel);
         }
 
-        public PartialViewResult AddTimer(string _taskGeneratedId)
+        public JsonResult AddTimer(int id)
         {
+            DateTime currentDate = DateTime.Now;
 
-            return PartialView("TimerBoxPartial", new TimerViewModel() { taskGeneratedId = _taskGeneratedId });
+            string generatedId = currentDate.Year.ToString() + currentDate.Month.ToString() + currentDate.Day.ToString() + currentDate.Millisecond.ToString() + id.ToString();
+
+            Timer newTimer = new Timer() { TimerObjectId = generatedId, Hours = 0, Minutes = 0, Seconds = 0, Task = "", Description = ""};
+
+            RWData.TimerRepository.AddRecord(newTimer);
+
+            return Json(new { timerObjectId = newTimer.TimerObjectId, hours = newTimer.Hours, minutes = newTimer.Minutes, seconds = newTimer.Seconds, task = newTimer.Task,
+                description = newTimer.Description, timerIsRunning = 0 } );
 
         }
     }
