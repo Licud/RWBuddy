@@ -6,6 +6,7 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
     $scope.tasksList = [];
     $scope.timeTypes = [{ type: "Hour" }, { type: "Minutes" }];
     $scope.possibleTimeTravel = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 5 }, { value: 10 }, { value: 15 }, { value: 30 }, { value: 45 }, { value: 60 }];
+    $scope.totalTime = { hours : 0, minutes : 0 }
 
     var latestTask = 0;
     var currentRunningTimer = "";
@@ -59,11 +60,14 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
                 if ($scope.tasksList[selectedTaskIndex].seconds === 60) {
                     $scope.tasksList[selectedTaskIndex].seconds = 0;
                     $scope.tasksList[selectedTaskIndex].minutes += 1;
+                    $scope.totalTime.minutes += 1;
+                    $scope.updateTotalTime();
                 }
 
                 if ($scope.tasksList[selectedTaskIndex].minutes === 60) {
                     $scope.tasksList[selectedTaskIndex].hours += 1;
                     $scope.tasksList[selectedTaskIndex].minutes = 0;
+                    $scope.totalTime.hours += 1;
                 }
             }, 1000);
 
@@ -122,14 +126,18 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
                     if (hoursDiffercenceResult >= 0) {
                         $scope.tasksList[selectedTaskIndex].hours -= 1;
                         $scope.tasksList[selectedTaskIndex].minutes = 60 + minutesDifferenceResult;
+                        $scope.totalTime.minutes -= $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                        $scope.updateTotalTime();
                     } else if (hoursDiffercenceResult < 0) {
                         alert("Subtraction not possible.");
                     }
                 } else {
                     $scope.tasksList[selectedTaskIndex].minutes -= $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                    $scope.totalTime.minutes -= $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                    $scope.updateTotalTime();
                 }
-            }
 
+            }
 
             if ($scope.tasksList[selectedTaskIndex].timeTravelTypes.type === "Hour") {
                 var hoursDiffercenceResult = $scope.tasksList[selectedTaskIndex].hours - $scope.tasksList[selectedTaskIndex].timeTravel.value;
@@ -138,6 +146,7 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
                     alert("Subtraction not possible.");
                 } else {
                     $scope.tasksList[selectedTaskIndex].hours -= $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                    $scope.totalTime.hours -= $scope.tasksList[selectedTaskIndex].timeTravel.value
                 }
             }
         } else if (direction === 1) { // Fast forward
@@ -146,14 +155,20 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
 
                 if (additionResult >= 60) {
                     $scope.tasksList[selectedTaskIndex].minutes = additionResult - 60;
-                    $scope.tasksList[selectedTaskIndex].hours += 1;
+                    $scope.tasksList[selectedTaskIndex].hours += 1
+                    $scope.totalTime.minutes += $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                    $scope.updateTotalTime();
                 } else {
                     $scope.tasksList[selectedTaskIndex].minutes += $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                    $scope.totalTime.minutes += $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                    $scope.updateTotalTime();
                 }
+
             }
 
             if ($scope.tasksList[selectedTaskIndex].timeTravelTypes.type === "Hour") {
                 var additionResult = $scope.tasksList[selectedTaskIndex].hours += $scope.tasksList[selectedTaskIndex].timeTravel.value;
+                $scope.totalTime.hours += $scope.tasksList[selectedTaskIndex].timeTravel.value;
             }
         } 
 
@@ -172,6 +187,20 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
             if ($scope.tasksList[i].timerObjectId === _timerObjectId) {
                 return i;
             }
+        }
+    }
+
+    $scope.updateTotalTime = function () {
+        if ($scope.totalTime.minutes >= 60)
+        {
+            $scope.totalTime.hours += 1;
+            $scope.totalTime.minutes = $scope.totalTime.minutes - 60;
+        }
+
+        if ($scope.totalTime.minutes < 0)
+        {
+            $scope.totalTime.hours -= 1;
+            $scope.totalTime.minutes = 60 + $scope.totalTime.minutes;
         }
     }
 
