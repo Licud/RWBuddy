@@ -29,5 +29,9 @@ namespace RelaywareBuddyData.Models
 
         [ForeignKey("CustomerId")]
         public virtual Customer Customer { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public DateTime LastUpdated { get; set; }
     }
 }
