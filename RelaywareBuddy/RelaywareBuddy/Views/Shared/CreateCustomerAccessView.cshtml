@@ -6,37 +6,36 @@
 
     <h4><a ng-click="displayForm()">Add a Customer Access Account</a></h4> 
 
-    <form id="createCAForm" class="col-md-12 form-horizontal no-display">
+    <form id="createCAForm" name="createCAForm" class="col-md-12 form-horizontal no-display">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Customer, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.Customer, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Customer, "", new { @class = "text-danger" })
+            <label class="control-label">Customer *</label>
+            <input id="createCAForm-customer" ng-model="caCustomer" name="customer" type="text" class="form-control" required />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IPAddress, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.IPAddress, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.IPAddress, "", new { @class = "text-danger" })
+            <label class="control-label">IP Address *</label>
+            <input id="createCAForm-ipaddress" ng-model="caIPAdress" name="ipaddress" type="text" class="form-control" required />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            <label class="control-label">Password *</label>
+            <input id="createCAForm-password" ng-model="ngPassword" name="password" type="text" class="form-control" required />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AccessType, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.AccessType, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.AccessType, "", new { @class = "text-danger" })
+            <label class="control-label">Access Type</label>
+            <select class="form-control" name="accesstype">
+                <option>File Access</option>
+                <option>Database</option>
+            </select>
         </div>
 
-
         <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <p ng-show="createCAForm.$invalid">Please fill in the required fields (*)</p>
+            <button ng-show="createCAForm.$valid" type="button" ng-click="addCustomerAccess()" class="btn btn-default">Add Customer Access Record</button>
         </div>
     </form>
 

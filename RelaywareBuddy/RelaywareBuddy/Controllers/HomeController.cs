@@ -42,5 +42,12 @@ namespace RelaywareBuddy.Controllers
                 description = newTimer.Description, timerIsRunning = 0 } );
 
         }
+
+        public JsonResult AddCustomerAccess(NewCustomerAccess _newCustomerAccess)
+        {
+            string myMessage = "well done";
+
+            return Json(new { message = myMessage });
+        }
     }
 }

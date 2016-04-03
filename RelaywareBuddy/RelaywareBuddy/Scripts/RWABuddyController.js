@@ -198,7 +198,6 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
 }]);
 
 RWBuddyController.controller('createCustomerAccessViewController', ['$scope', '$compile', function ($scope, $compile) {
-
     $scope.displayForm = function () {
 
         var createCAForm = $('#createCAForm');
@@ -212,6 +211,18 @@ RWBuddyController.controller('createCustomerAccessViewController', ['$scope', '$
             createCAForm.addClass('no-display');
         }
 
+    }
+
+    $scope.addCustomerAccess = function () {
+        var newCustomerAccessForm = $('#createCAForm');
+        var myTest = $('#createCAForm').serializeArray();
+
+        $.post("Home/AddCustomerAccess", $('#createCAForm').serializeArray(),
+        function (response) {
+            alert(response.message)
+        }, "json");
+
+        alert(JSON.stringify(myTest));
     }
 
 }]);
