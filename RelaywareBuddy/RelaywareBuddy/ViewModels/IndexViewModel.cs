@@ -32,6 +32,6 @@ namespace RelaywareBuddy.ViewModels
 
         public string Password { get; set; }
 
-        public string FileAcess { get; set; }
+        public string AccessType { get; set; }
     }
 }
