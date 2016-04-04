@@ -197,7 +197,21 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
 
 }]);
 
-RWBuddyController.controller('createCustomerAccessViewController', ['$scope', '$compile', function ($scope, $compile) {
+RWBuddyController.controller('createCustomerAccessViewController', ['$scope', function ($scope) {
+    $scope.CustomerAccessData = [];
+
+    angular.element(document).ready(function () {
+        $.post("Home/GetAllCustomerAccessDetails",
+        function (response) {
+
+            for (var responseData in response) {
+                $scope.CustomerAccessData.push(responseData)
+            }
+
+
+        });
+    });
+
     $scope.displayForm = function () {
 
         var createCAForm = $('#createCAForm');

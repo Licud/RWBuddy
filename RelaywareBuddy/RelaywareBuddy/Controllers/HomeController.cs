@@ -45,9 +45,44 @@ namespace RelaywareBuddy.Controllers
 
         public JsonResult AddCustomerAccess(NewCustomerAccess _newCustomerAccess)
         {
-            string myMessage = "well done";
+            CustomerAccess customerAccess = new CustomerAccess()
+            {
+                Customer = _newCustomerAccess.Customer,
+                IPAddress = _newCustomerAccess.IPAddress,
+                AccessType = _newCustomerAccess.AccessType,
+                Password = _newCustomerAccess.Password,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
 
-            return Json(new { message = myMessage });
+            customerAccess = RWData.CustomerAccessRepository.AddAndReturnRecord(customerAccess);
+
+            RWData.Save();
+
+            return Json(new { message = "Customer Access Added!" });
+        }
+
+        public JsonResult GetAllCustomerAccessDetails()
+        {
+
+            List<CustomerAccess> customerAccessData =  RWData.CustomerAccessRepository.GetAllRecords().ToList();
+
+            var customerAccessDataJson = new List<object>();
+
+            for(int i = 0; i < customerAccessData.Count; i++)
+            {
+                customerAccessDataJson.Add(new CustomerAccess
+                {
+                    Customer = customerAccessData.ElementAt(i).Customer,
+                    IPAddress = customerAccessData.ElementAt(i).IPAddress,
+                    Password = customerAccessData.ElementAt(i).Password,
+                    AccessType = customerAccessData.ElementAt(i).AccessType
+                });
+
+            }
+
+            return Json(customerAccessDataJson,JsonRequestBehavior.AllowGet);
+
         }
     }
 }
