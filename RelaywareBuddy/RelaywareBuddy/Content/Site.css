@@ -1,8 +1,12 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: #f1f1f1 !important;
+    background-color: #ededed !important;
 }
+
+nav {background: #1baddc;}
+
+nav a{color: white;}
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -38,4 +42,8 @@ textarea {
 
 .time-travel-box > .time-travel-type { display: inline-block; width: 50%; }
 
-.partial-content{ background-color: white; padding: 7px; margin-top: 7px; border-radius: 10px;}
+.partial-content{ background-color: #F8F8F8; padding: 7px; margin-top: 7px; border-radius: 10px;}
+
+@media(min-width: 1200px){
+    .container{max-width:1200px;}
+}

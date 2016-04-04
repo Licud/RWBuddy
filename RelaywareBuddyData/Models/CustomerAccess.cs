@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace RelaywareBuddyData.Models
 {
@@ -15,5 +16,9 @@ namespace RelaywareBuddyData.Models
         public string AccessType { get; set; }
 
         public string Customer { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public DateTime LastUpdated { get; set; }
     }
 }

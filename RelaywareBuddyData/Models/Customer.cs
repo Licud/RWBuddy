@@ -17,6 +17,8 @@ namespace RelaywareBuddyData.Models
         [Display (Name ="MS End Date")]
         public DateTime MSEndDate { get; set; }
 
+        public bool HasMS { get; set; }
+
         [Display (Name ="Service Duration")]
         public int DurationOfService { get; set; }
 
@@ -25,5 +27,9 @@ namespace RelaywareBuddyData.Models
 
         [Display (Name ="Notes")]
         public string notes { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public DateTime LastUpdated { get; set; }
     }
 }

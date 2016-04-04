@@ -1,4 +1,5 @@
 ﻿using RelaywareBuddyData.Models;
+using System;
 using System.Collections.Generic;
 
 namespace RelaywareBuddy.ViewModels
@@ -20,5 +21,17 @@ namespace RelaywareBuddy.ViewModels
     {
 
         public string taskGeneratedId { get; set; }
+    }
+
+    [Serializable]
+    public class NewCustomerAccess
+    {
+        public string Customer { get; set;}
+
+        public string IPAddress { get; set; }
+
+        public string Password { get; set; }
+
+        public string FileAcess { get; set; }
     }
 }
