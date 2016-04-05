@@ -198,19 +198,6 @@ RWBuddyController.controller('timerController', ['$scope', '$http', '$interval',
 }]);
 
 RWBuddyController.controller('createCustomerAccessViewController', ['$scope', function ($scope) {
-    $scope.CustomerAccessData = [];
-
-    angular.element(document).ready(function () {
-        $.post("Home/GetAllCustomerAccessDetails",
-        function (response) {
-
-            for (var responseData in response) {
-                $scope.CustomerAccessData.push(responseData)
-            }
-
-
-        });
-    });
 
     $scope.displayForm = function () {
 
@@ -233,10 +220,25 @@ RWBuddyController.controller('createCustomerAccessViewController', ['$scope', fu
 
         $.post("Home/AddCustomerAccess", $('#createCAForm').serializeArray(),
         function (response) {
-            alert(response.message)
-        }, "json");
+            //To be replaced by a service on a future development date!
 
-        alert(JSON.stringify(myTest));
+            $('#customer-access-list').append('<div class="row"><div class="col-md-3"><p>' + response.Customer +'</p></div><div class="col-md-3"><p>'+ response.IPAddress +'</p></div><div class="col-md-3"><p>' + response.Password +' </p></div><div class="col-md-3"><p>' + response.AccessType + ' </p></div></div>');
+        }, "json");
     }
+
+}]);
+
+RWBuddyController.controller('viewCustomerAccessController', ['$scope', function ($scope) {
+
+    $scope.CustomerAccessData = [];
+
+    $.getJSON("Home/GetAllCustomerAccessDetails",
+    function (response) {
+
+        $scope.CustomerAccessData = response;
+
+        $scope.$apply();
+
+    });
 
 }]);

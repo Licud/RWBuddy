@@ -4,18 +4,52 @@
 
 <hr />
 
-@*@if(Model.Any() == false)
-{
-    <p>No Customer Database Access yet..</p>
-}
-else
-{*@
-    <div class="col-md-12" ng-repeat="customerAccess in CustomerAccessData">
+<div ng-controller="viewCustomerAccessController">
 
-        <p ng-model="customerAccess.Customer"></p>
+    <div class="row">
+
+        <div class="col-md-3">
+            <h3>Customer</h3>
+        </div>
+
+        <div class="col-md-3">
+            <h3>IP Address</h3>
+        </div>
+
+        <div class="col-md-3">
+            <h3>Password</h3>
+        </div>
+
+        <div class="col-md-3">
+            <h3>Access Type</h3>
+        </div>
 
     </div>
-@*}*@
+
+    <div id="customer-access-list">
+
+        <div ng-repeat="customerAccess in CustomerAccessData" class="row">
+
+            <div class="col-md-3">
+                <p ng-bind="customerAccess.Customer"></p>
+            </div>
+
+            <div class="col-md-3">
+                <p ng-bind="customerAccess.IPAddress"></p>
+            </div>
+
+            <div class="col-md-3">
+                <p ng-bind="customerAccess.Password"></p>
+            </div>
+
+            <div class="col-md-3">
+                <p ng-bind="customerAccess.AccessType"></p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
 
 
 <hr />
