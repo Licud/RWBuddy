@@ -9,25 +9,31 @@
 
     <div class="col-md-12">
 
-        @Html.Partial("TicketPartial", Model.ticket)
+        @Html.Partial("_Ticket", Model.ticket)
 
     </div>
 
     <div class="col-md-12">
 
-        @Html.Partial("CustomerAccessPartial", Model.customerAccess)
+        @Html.Partial("_CustomerAccess", Model.customerAccess)
 
     </div>
 
     <div class="col-md-12">
 
-        @Html.Partial("CreateCustomerAccessView", Model.newCustomerAccess)
+        @Html.Partial("_CreateCustomerAccess", Model.newCustomerAccess)
         
     </div>
 
     <div class="col-md-12">
 
-        @Html.Partial("CustomerPartial", Model.customer)
+        @Html.Partial("_Customer", Model.customer)
+
+    </div>
+
+    <div class="col-md-12">
+
+        @Html.Partial("_CreateCustomer", Model.customer)
 
     </div>
 
@@ -37,7 +43,7 @@
 
     <div class="col-md-12">
 
-        @Html.Partial("TimerPartial", Model.timer)
+        @Html.Partial("_Timer", Model.timer)
 
     </div>
 

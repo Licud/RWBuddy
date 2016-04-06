@@ -1,10 +1,10 @@
 ﻿@model RelaywareBuddyData.Models.CustomerAccess
 
-<div ng-controller="createCustomerAccessViewController">
+<div ng-controller="createCustomerAccessViewController" class="partial-content">
 
     @Html.AntiForgeryToken()
 
-    <h4><a ng-click="displayForm()">Add a Customer Access Account</a></h4> 
+    <h4 class="text-center"><a ng-click="displayForm()">Add Customer Access Account</a></h4> 
 
     <form id="createCAForm" name="createCAForm" class="col-md-12 form-horizontal no-display">
         <hr />
