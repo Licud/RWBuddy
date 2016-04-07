@@ -242,3 +242,32 @@ RWBuddyController.controller('viewCustomerAccessController', ['$scope', function
     });
 
 }]);
+
+RWBuddyController.controller('createCustomerController', ['$scope', function ($scope) {
+
+    $scope.displayForm = function () {
+
+        var createCAForm = $('#createCustomerForm');
+
+        if (createCAForm.hasClass('no-display')) {
+            createCAForm.removeClass('no-display');
+            createCAForm.addClass('block-display');
+        }
+        else {
+            createCAForm.removeClass('block-display');
+            createCAForm.addClass('no-display');
+        }
+
+    }
+
+    $scope.addCustomer = function () {
+        var newCustomerAccessForm = $('#createCustomerForm');
+        var myTest = $('#createCustomerForm').serializeArray();
+
+        $.post("Home/AddCustomer", $('#createCustomerForm').serializeArray(),
+        function (response) {
+            alert(response[0].CustomerName + " added!" );
+        }, "json");
+    }
+
+}]);

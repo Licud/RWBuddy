@@ -12,18 +12,18 @@ namespace RelaywareBuddyData.Models
         public string CustomerName { get; set; }
 
         [Display (Name ="MS Start Date")]
-        public DateTime MSStartDate { get; set; }
+        public DateTime? MSStartDate { get; set; }
 
         [Display (Name ="MS End Date")]
-        public DateTime MSEndDate { get; set; }
+        public DateTime ? MSEndDate { get; set; }
 
-        public bool HasMS { get; set; }
+        public bool ? HasMS { get; set; }
 
         [Display (Name ="Service Duration")]
-        public int DurationOfService { get; set; }
+        public int ? DurationOfService { get; set; }
 
         [Display(Name ="Reporting")]
-        public bool ReportingServices { get; set; }
+        public bool ? ReportingServices { get; set; }
 
         [Display (Name ="Notes")]
         public string notes { get; set; }

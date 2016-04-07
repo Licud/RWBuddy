@@ -34,4 +34,23 @@ namespace RelaywareBuddy.ViewModels
 
         public string AccessType { get; set; }
     }
+
+    [Serializable]
+
+    public class NewCustomer
+    {
+        public string CustomerName { get; set; }
+
+        public bool HasMS { get; set; }
+
+        public bool ReportingServices { get; set; }
+
+        public DateTime MSStartDate { get; set; }
+
+        public DateTime MSEndDate { get; set; }
+
+        public int DurationOfService { get; set; }
+
+        public string notes { get; set; }
+    }
 }

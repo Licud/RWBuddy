@@ -71,5 +71,36 @@ namespace RelaywareBuddy.Controllers
             return Json(customerAccessData, JsonRequestBehavior.AllowGet);
 
         }
+
+        public JsonResult AddCustomer(NewCustomer _newCustomer)
+        {
+            Customer customer = new Customer()
+            {
+                CustomerName = _newCustomer.CustomerName,
+                MSStartDate = (_newCustomer.MSStartDate == DateTime.MinValue) ? DateTime.Now : _newCustomer.MSStartDate,
+                MSEndDate = (_newCustomer.MSEndDate == DateTime.MinValue) ? DateTime.Now : _newCustomer.MSEndDate,
+                HasMS = _newCustomer.HasMS,
+                DurationOfService = _newCustomer.DurationOfService,
+                ReportingServices = _newCustomer.ReportingServices,
+                notes = _newCustomer.notes,
+                Created = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+
+            customer = RWData.CustomerRepository.AddAndReturnRecord(customer);
+
+            return Json(new
+            {
+                CustomerName = customer.CustomerName,
+                MSStartDate = customer.MSStartDate,
+                MSEndDate = customer.MSEndDate,
+                HasMS = customer.HasMS,
+                DurationOfService = customer.DurationOfService,
+                ReportingServices = customer.ReportingServices,
+                notes = customer.notes,
+                Created = customer.Created,
+                LastUpdated = customer.LastUpdated
+            });
+        }
     }
 }
